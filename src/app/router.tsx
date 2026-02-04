@@ -1,5 +1,4 @@
 import { createHashRouter } from 'react-router-dom';
-
 import { Layout } from '../components/Layout';
 import { Home } from '../pages/Home';
 import { Catalog } from '../pages/Catalog';
@@ -16,12 +15,9 @@ export const router = createHashRouter([
     errorElement: <NotFound />,
     children: [
       { index: true, element: <Home /> },
-
       { path: 'catalog', element: <Catalog /> },
       { path: 'catalog/:category', element: <CatalogProducts /> },
-
       { path: 'product/:id', element: <ProductPage /> },
-
       { path: 'cart', element: <Cart /> },
       { path: 'favorites', element: <Favorites /> },
     ],
