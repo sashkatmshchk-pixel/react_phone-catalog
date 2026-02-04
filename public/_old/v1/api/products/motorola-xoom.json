@@ -42,9 +42,9 @@
     }, 
     "id": "motorola-xoom", 
     "images": [
-        "img/phones/motorola-xoom.0.jpg", 
-        "img/phones/motorola-xoom.1.jpg", 
-        "img/phones/motorola-xoom.2.jpg"
+        "/react_phone-catalog/img/phones/motorola-xoom.0.jpg", 
+        "/react_phone-catalog/img/phones/motorola-xoom.1.jpg", 
+        "/react_phone-catalog/img/phones/motorola-xoom.2.jpg"
     ], 
     "name": "MOTOROLA XOOM\u2122", 
     "sizeAndWeight": {

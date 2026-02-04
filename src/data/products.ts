@@ -18,7 +18,7 @@ export async function loadProducts(): Promise<Product[]> {
   const accessories: Product[] = accessoriesData.map((p: any) => ({
     ...p,
 
-    // 🔴 ГЛАВНЫЙ ФИКС
+   
     images: p.images
       ? p.images
       : p.image

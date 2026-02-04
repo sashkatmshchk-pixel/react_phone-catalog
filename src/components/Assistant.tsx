@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { resolveImage } from '../utils/image';
 
 export const Assistant = () => {
   const [input, setInput] = useState('');
@@ -6,27 +7,26 @@ export const Assistant = () => {
 
   const send = () => {
     if (!input.trim()) return;
-    setMessages(m => [...m, input]);
+    setMessages(prev => [...prev, input]);
     setInput('');
   };
 
   return (
     <div className="assistant">
-      {/* AVATAR */}
       <img
-        src="/img/assistant/angel.png"
+        src={resolveImage('img/assistant/angel.png')}
         alt="Angel assistant"
         className="assistant-avatar"
       />
 
-      {/* CHAT */}
       <div className="chat">
         {messages.map((m, i) => (
-          <div key={i} className="msg">{m}</div>
+          <div key={i} className="msg">
+            {m}
+          </div>
         ))}
       </div>
 
-      {/* INPUT */}
       <div className="assistant-controls">
         <input
           value={input}

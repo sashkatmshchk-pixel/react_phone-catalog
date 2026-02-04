@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import './Catalog.css';
+import { resolveImage } from '../utils/image';
 
 export const Catalog = () => {
   return (
@@ -9,7 +10,7 @@ export const Catalog = () => {
       <div className="catalog-categories">
         <Link to="/catalog/phones" className="catalog-card">
           <img
-            src="/img/catalog/phone-outline.svg"
+            src={resolveImage('img/catalog/phone-outline.svg')}
             alt="Phones"
           />
           <span>PHONES</span>
@@ -17,7 +18,7 @@ export const Catalog = () => {
 
         <Link to="/catalog/tablets" className="catalog-card">
           <img
-            src="/img/catalog/tablet-outline.svg"
+            src={resolveImage('img/catalog/tablet-outline.svg')}
             alt="Tablets"
           />
           <span>TABLETS</span>
@@ -25,13 +26,13 @@ export const Catalog = () => {
 
         <Link to="/catalog/accessories" className="catalog-card">
           <img
-            src="/img/catalog/watch-outline.svg"
+            src={resolveImage('img/catalog/watch-outline.svg')}
             alt="Accessories"
           />
           <span>ACCESSORIES</span>
         </Link>
       </div>
-      
+
       <div className="catalog-footer">
         sashkatmshchk@gmail.com
       </div>
