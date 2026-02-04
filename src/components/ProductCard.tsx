@@ -13,7 +13,6 @@ type Props = {
 };
 
 export const ProductCard = ({ product }: Props) => {
-
   const color = product.color;
   const capacity = product.capacity;
 
@@ -32,19 +31,31 @@ export const ProductCard = ({ product }: Props) => {
       window.removeEventListener('storage-update', update);
   }, [product.id, color, capacity]);
 
-  const image = resolveImage(product.images[0]);
+  let image = '';
+  if (product.images.length > 0) {
+    const base = product.images[0];
+    const parts = base.split('/');
+
+    if (parts.length >= 3) {
+      parts[parts.length - 2] = color;
+    }
+
+    image = resolveImage(parts.join('/'));
+  }
+
   const price = getProductPrice(product, capacity);
 
   return (
     <div className="product-card">
       <Link to={`/product/${product.id}`}>
-        <img
-          src={image}
-          alt={product.name}
-          width={200}
-          loading="lazy"
-        />
-
+        {image && (
+          <img
+            src={image}
+            alt={product.name}
+            width={200}
+            loading="lazy"
+          />
+        )}
         <h3>{product.name}</h3>
       </Link>
 
@@ -52,17 +63,13 @@ export const ProductCard = ({ product }: Props) => {
 
       <button
         disabled={inCart}
-        onClick={() =>
-          addToCart(product.id, color, capacity)
-        }
+        onClick={() => addToCart(product.id, color, capacity)}
       >
         {inCart ? 'Added to cart' : 'Add to cart'}
       </button>
 
       <button
-        onClick={() =>
-          toggleFavorite(product.id, color, capacity)
-        }
+        onClick={() => toggleFavorite(product.id, color, capacity)}
       >
         {fav ? '★ Added to favorites' : '☆ Add to favorites'}
       </button>

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import './Catalog.css';
 import { resolveImage } from '../utils/image';
+import './Catalog.css';
 
 export const Catalog = () => {
   return (
