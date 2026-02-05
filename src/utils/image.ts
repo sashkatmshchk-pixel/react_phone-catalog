@@ -1,3 +1,5 @@
+const BASE = import.meta.env.BASE_URL;
+
 export function resolveImage(path?: string): string {
   if (!path) return '';
 
@@ -7,7 +9,5 @@ export function resolveImage(path?: string): string {
 
   const clean = path.startsWith('/') ? path.slice(1) : path;
 
-  const fixed = clean.replace(/^img\//, '');
-
-  return `./img/${fixed}`;
+  return `${BASE}img/${clean.replace(/^img\//, '')}`;
 }
