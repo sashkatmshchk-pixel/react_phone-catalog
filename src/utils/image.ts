@@ -5,9 +5,9 @@ export function resolveImage(path?: string): string {
     return path;
   }
 
-  let clean = path.startsWith('/') ? path.slice(1) : path;
+  const clean = path.startsWith('/') ? path.slice(1) : path;
 
-  clean = clean.replace(/^img\//, '');
+  const fixed = clean.replace(/^img\//, '');
 
-  return `/img/${clean}`;
+  return `./img/${fixed}`;
 }
