@@ -51,15 +51,63 @@ export const CatalogProducts = () => {
 
   return (
     <div className="catalog">
-      <button className="hero-back" onClick={() => navigate(-1)}>
-        Back
+      {/* BACK */}
+      <button
+        onClick={() => navigate(-1)}
+        style={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          color: '#94aeb8',
+          letterSpacing: '2px',
+          fontSize: '14px',
+          marginBottom: '10px',
+          transition: '0.3s',
+        }}
+        onMouseEnter={e => {
+          e.currentTarget.style.color = '#dff6ff';
+          e.currentTarget.style.textShadow =
+            '0 0 10px rgba(180,230,255,0.7)';
+          e.currentTarget.style.transform = 'scale(1.06)';
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.color = '#94aeb8';
+          e.currentTarget.style.textShadow = 'none';
+          e.currentTarget.style.transform = 'scale(1)';
+        }}
+      >
+        BACK
       </button>
 
-      <h2>{category}</h2>
+      <h2 style={{ textTransform: 'lowercase' }}>{category}</h2>
 
+      {/* SORT */}
       <select
         value={sort}
         onChange={e => setSort(e.target.value as 'name' | 'price')}
+        style={{
+          marginTop: '10px',
+          marginBottom: '30px',
+          padding: '8px 16px',
+          borderRadius: '10px',
+          border: '1px solid #eef7fb',
+          background: 'white',
+          fontSize: '14px',
+          color: '#94aeb8',
+          outline: 'none',
+          transition: '0.25s',
+        }}
+        onMouseEnter={e => {
+          e.currentTarget.style.boxShadow =
+            '0 0 10px rgba(180,230,255,0.45)';
+          e.currentTarget.style.border = '1px solid #dff4ff';
+          e.currentTarget.style.transform = 'scale(1.04)';
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.boxShadow = 'none';
+          e.currentTarget.style.border = '1px solid #eef7fb';
+          e.currentTarget.style.transform = 'scale(1)';
+        }}
       >
         <option value="name">By name</option>
         <option value="price">By price</option>
@@ -71,13 +119,46 @@ export const CatalogProducts = () => {
         ))}
       </div>
 
+      {/* PAGINATION */}
       {totalPages > 1 && (
-        <div className="pagination">
+        <div
+          style={{
+            marginTop: '40px',
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '18px',
+          }}
+        >
           {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
             <button
               key={p}
-              className={p === page ? 'active' : ''}
               onClick={() => setPage(p)}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: p === page ? '#dff6ff' : '#94aeb8',
+fontSize: '14px',
+                letterSpacing: '2px',
+                transition: '0.25s',
+                textShadow:
+                  p === page
+                    ? '0 0 10px rgba(180,230,255,0.7)'
+                    : 'none',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.color = '#dff6ff';
+                e.currentTarget.style.textShadow =
+                  '0 0 10px rgba(180,230,255,0.7)';
+                e.currentTarget.style.transform = 'scale(1.15)';
+              }}
+              onMouseLeave={e => {
+                if (p !== page) {
+                  e.currentTarget.style.color = '#94aeb8';
+                  e.currentTarget.style.textShadow = 'none';
+                }
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
             >
               {p}
             </button>
