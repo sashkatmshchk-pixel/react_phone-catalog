@@ -92,3 +92,22 @@ body {
 .hero-link:hover::before {
   transform: translateX(-6px);
 }
+
+button,
+a {
+  transition: 
+    color 0.25s ease,
+    text-shadow 0.25s ease,
+    transform 0.18s ease;
+}
+
+button:hover,
+a:hover,
+.hero-back:hover {
+  color: #bfeaff !important;
+  text-shadow:
+    0 0 6px rgba(180,230,255,0.9),
+    0 0 18px rgba(120,200,255,0.7),
+    0 0 34px rgba(80,170,255,0.5);
+  transform: scale(1.05);
+}

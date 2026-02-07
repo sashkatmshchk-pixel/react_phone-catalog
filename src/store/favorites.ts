@@ -49,3 +49,9 @@ export function toggleFavorite(id: string, color: string, capacity: string) {
 export function getFavoritesCount(): number {
   return read().length;
 }
+export function removeFromFavorites(id: string) {
+  const favs = getFavorites().filter(item => item.id !== id);
+  localStorage.setItem('favorites', JSON.stringify(favs));
+
+  window.dispatchEvent(new Event('storage-update'));
+}

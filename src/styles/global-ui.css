@@ -135,61 +135,35 @@ button:focus {
 .cart-item .remove:hover,
 .favorite-item .remove:hover {
   opacity: 1;
-}/* ANGEL ASSISTANT */
-
-.assistant {
-  margin-top: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
 }
-
-.assistant-avatar {
-  width: 280px;
-  max-width: 80vw;
-  filter: drop-shadow(0 0 25px rgba(120, 180, 255, 0.35));
-}
-
-.chat {
-  width: 100%;
-  max-width: 520px;
-  text-align: left;
-}
-
-.msg {
+.hero-back {
+  display: inline-block;
+  margin-bottom: 20px;
   font-size: 14px;
-  margin-bottom: 6px;
-  opacity: 0.85;
+  letter-spacing: 2px;
+  text-decoration: none;
+  color: #8aa8b5;
+  transition: 0.3s;
 }
 
-.assistant-controls {
-  width: 100%;
-  max-width: 520px;
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
+.hero-back:hover {
+  color: #bde9ff;
+  text-shadow:
+    0 0 6px rgba(180,230,255,0.9),
+    0 0 18px rgba(120,200,255,0.7),
+    0 0 40px rgba(80,170,255,0.5);
 }
-
-.assistant-controls input {
-  flex: 1;
-  border: none;
-  border-bottom: 1px solid rgba(0,0,0,0.2);
-  padding: 10px 0;
-  font-size: 14px;
-  background: transparent;
-  outline: none;
-}
-
-.assistant-controls button {
+.back-btn {
   background: none;
   border: none;
-  font-size: 12px;
-  letter-spacing: 0.2em;
+  color: #94aeb8;
+  letter-spacing: 2px;
   cursor: pointer;
-  opacity: 0.6;
+  transition: 0.25s;
 }
 
-.assistant-controls button:hover {
-  opacity: 1;
+.back-btn:hover {
+  color: #dff6ff;
+  text-shadow: 0 0 12px rgba(180,230,255,0.9);
+  transform: scale(1.06);
 }

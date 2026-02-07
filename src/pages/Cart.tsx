@@ -32,6 +32,7 @@ export const Cart = () => {
 
           const baseImg = product.images[0];
           const parts = baseImg.split('/');
+
           if (parts.length >= 3) {
             parts[parts.length - 2] = item.color;
           }
@@ -53,43 +54,121 @@ export const Cart = () => {
     return () => window.removeEventListener('storage-update', update);
   }, []);
 
-  return (
-    <div>
-      <Link to="/catalog" className="hero-back">Back</Link>
+  const total = items.reduce(
+    (sum, i) => sum + i.price * i.item.quantity,
+    0
+  );
 
-      <h1>Cart</h1>
+  const totalCount = items.reduce((sum, i) => sum + i.item.quantity, 0);
+
+  return (
+    <div style={{ maxWidth: 900, margin: '0 auto' }}>
+      <Link to="/catalog" className="hero-back">
+        Back
+      </Link>
+
+      <h1 style={{ marginBottom: 30 }}>Cart</h1>
 
       {items.length === 0 && <p>Your cart is empty</p>}
 
-      {items.map(({ item, product, image, price }) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        {items.map(({ item, product, image, price }) => (
+          <div
+            key={`${item.id}-${item.color}-${item.capacity}`}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 25,
+              padding: 20,
+              borderRadius: 18,
+              border: '1px solid #e6eef2',
+              background: '#fff',
+            }}
+          >
+            <img
+              src={image}
+              width={90}
+              style={{ borderRadius: 12 }}
+            />
+
+            <div style={{ flex: 1 }}>
+              <h3 style={{ margin: 0 }}>{product.name}</h3>
+
+              <p style={{ margin: '6px 0', color: '#8aa8b5' }}>
+                {item.capacity} • {item.color.replace('-', ' ')}
+              </p>
+
+              <button
+                onClick={() =>
+                  removeFromCart(item.id, item.color, item.capacity)
+                }
+                style={{
+                  marginTop: 8,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: '#94aeb8',
+                  letterSpacing: '1px',
+                }}
+              >
+                Remove
+              </button>
+            </div>
+
+            <div style={{ textAlign: 'right', minWidth: 120 }}>
+              <div style={{ fontSize: 14, color: '#8aa8b5' }}>
+                {item.quantity} × ${price}
+              </div>
+
+              <div
+                style={{
+                  fontSize: 20,
+                  marginTop: 6,
+                  fontWeight: 500,
+                }}
+              >
+                ${price * item.quantity}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {items.length > 0 && (
         <div
-          key={`${item.id}-${item.color}-${item.capacity}`}
           style={{
-            border: '1px solid #ccc',
-            padding: 12,
-            marginBottom: 12,
+            marginTop: 50,
+            paddingTop: 25,
+            borderTop: '1px solid #e6eef2',
+            textAlign: 'right',
           }}
         >
-          <img src={image} width={120} />
+<div style={{ color: '#8aa8b5', marginBottom: 8 }}>
+            Total items: {totalCount}
+          </div>
 
-          <h3>
-            {product.name} {item.capacity} {item.color.replace('-', ' ')}
-          </h3>
+          <div style={{ fontSize: 28, marginBottom: 20 }}>
+            Total: ${total}
+          </div>
 
-          <p>Color: {item.color}</p>
-          <p>Capacity: {item.capacity}</p>
-          <p>Qty: {item.quantity}</p>
-          <p>${price * item.quantity}</p>
-
-          <button
-            onClick={() =>
-              removeFromCart(item.id, item.color, item.capacity)
-            }
-          >
-            Remove
-          </button>
+<button
+  onClick={() => {
+    alert('Order placed successfully!');
+    localStorage.removeItem('cart');
+    window.dispatchEvent(new Event('storage-update'));
+  }}
+  style={{
+    fontSize: 18,
+    letterSpacing: '0.18em',
+    textTransform: 'uppercase',
+    color: '#8aa8b5',
+    marginTop: 10,
+  }}
+>
+  Checkout
+</button>
         </div>
-      ))}
+      )}
     </div>
   );
 };

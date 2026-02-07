@@ -7,7 +7,14 @@ const Layout = () => {
     <>
       <Header />
 
-      <main style={{ minHeight: "80vh" }}>
+      <main
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: "20px",
+          minHeight: "80vh",
+        }}
+      >
         <Outlet />
       </main>
 

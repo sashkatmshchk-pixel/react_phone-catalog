@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+import { getFavorites, removeFromFavorites } from '../store/favorites';
 import type { FavoriteItem } from '../store/favorites';
-import { getFavorites, toggleFavorite } from '../store/favorites';
+
 import { loadProducts } from '../data/products';
-import { getProductPrice } from '../utils/price';
-import { resolveImage } from '../utils/image';
 import type { Product } from '../types/Product';
 
+import { getProductPrice } from '../utils/price';
+import { resolveImage } from '../utils/image';
+
 type FavView = {
+  item: FavoriteItem;
   product: Product;
-  color: string;
-  capacity: string;
+  image: string;
+  price: number;
 };
 
 export const Favorites = () => {
@@ -18,18 +22,26 @@ export const Favorites = () => {
 
   useEffect(() => {
     const update = async () => {
-      const favs: FavoriteItem[] = getFavorites();
+      const fav = getFavorites();
       const products = await loadProducts();
 
-      const resolved = favs
-        .map(f => {
-          const product = products.find(p => p.id === f.id);
+      const resolved = fav
+        .map(item => {
+          const product = products.find(p => p.id === item.id);
           if (!product) return null;
 
+          const baseImg = product.images[0];
+          const parts = baseImg.split('/');
+
+          if (parts.length >= 3) {
+            parts[parts.length - 2] = item.color;
+          }
+
           return {
+            item,
             product,
-            color: f.color,
-            capacity: f.capacity,
+            image: resolveImage(parts.join('/')),
+            price: getProductPrice(product, item.capacity),
           };
         })
         .filter(Boolean) as FavView[];
@@ -43,50 +55,60 @@ export const Favorites = () => {
   }, []);
 
   return (
-    <div>
-      <Link to="/catalog" className="hero-back">Back</Link>
+    <div style={{ maxWidth: 900, margin: '0 auto' }}>
+      <Link to="/catalog" className="hero-back">
+        Back
+      </Link>
 
-      <h1>Favorites</h1>
+      <h1 style={{ marginBottom: 30 }}>Favorites</h1>
 
       {items.length === 0 && <p>No favorites yet</p>}
 
-      {items.map(({ product, color, capacity }) => {
-        const baseImg = product.images[0];
-const parts = baseImg.split('/');
-if (parts.length >= 3) {
-  parts[parts.length - 2] = color;
-}
-const image = resolveImage(parts.join('/'));
-        const price = getProductPrice(product, capacity);
-
-        return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        {items.map(({ item, product, image, price }) => (
           <div
-            key={`${product.id}-${color}-${capacity}`}
+            key={`${item.id}-${item.color}-${item.capacity}`}
             style={{
-              border: '1px solid #ccc',
-              padding: 12,
-              marginBottom: 12,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 25,
+              padding: 20,
+              borderRadius: 18,
+              border: '1px solid #e6eef2',
+              background: '#fff',
             }}
           >
-            <img src={image} width={120} />
+            <img src={image} width={90} style={{ borderRadius: 12 }} />
+            <div style={{ flex: 1 }}>
+              <h3 style={{ margin: 0 }}>{product.name}</h3>
 
-            <h3>
-  {product.name} {capacity} {color.replace('-', ' ')}
-           </h3>
-            <p>Color: {color}</p>
-            <p>Capacity: {capacity}</p>
-            <p>${price}</p>
+              <p style={{ margin: '6px 0', color: '#8aa8b5' }}>
+                {item.capacity} • {item.color.replace('-', ' ')}
+              </p>
 
-            <button
-              onClick={() =>
-                toggleFavorite(product.id, color, capacity)
-              }
-            >
-              Remove
-            </button>
+              <button
+                onClick={() =>
+                 removeFromFavorites(item.id)
+                }
+                style={{
+                  marginTop: 8,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: '#94aeb8',
+                  letterSpacing: '1px',
+                }}
+              >
+                Remove
+              </button>
+            </div>
+
+            <div style={{ fontSize: 20, fontWeight: 500 }}>
+              ${price}
+            </div>
           </div>
-        );
-      })}
+        ))}
+      </div>
     </div>
   );
 };

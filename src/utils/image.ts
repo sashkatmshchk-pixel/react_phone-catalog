@@ -7,7 +7,23 @@ export function resolveImage(path?: string): string {
     return path;
   }
 
-  const clean = path.startsWith('/') ? path.slice(1) : path;
+  let clean = path.trim();
 
-  return `${BASE}img/${clean.replace(/^img\//, '')}`;
+  if (clean.startsWith('/')) {
+    clean = clean.slice(1);
+  }
+
+  if (!clean.startsWith('img/')) {
+    clean = `img/${clean}`;
+  }
+
+  clean = clean
+    .replaceAll('space gray', 'space-gray')
+    .replaceAll('space-gray', 'space-gray')
+    .replaceAll('rose gold', 'rose-gold')
+    .replaceAll('sky blue', 'sky-blue');
+
+  clean = clean.replace('img/img/', 'img/');
+
+  return BASE + clean;
 }
