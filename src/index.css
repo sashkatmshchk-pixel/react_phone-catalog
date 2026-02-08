@@ -111,3 +111,8 @@ a:hover,
     0 0 34px rgba(80,170,255,0.5);
   transform: scale(1.05);
 }
+.active-page {
+  color: #9fdcff !important;
+  text-shadow: 0 0 12px rgba(159,220,255,0.9);
+  transform: scale(1.15);
+}

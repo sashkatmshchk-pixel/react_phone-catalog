@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import { loadProducts } from '../data/products';
 import type { Product } from '../types/Product';
@@ -8,15 +8,25 @@ import { ProductCard } from '../components/ProductCard';
 export const CatalogProducts = () => {
   const { category = '' } = useParams();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [products, setProducts] = useState<Product[]>([]);
-  const [page, setPage] = useState(1);
-  const [sort, setSort] = useState<'newest' | 'name' | 'price'>('newest');
-  const [perPage, setPerPage] = useState(16);
+
+  const page = Number(searchParams.get('page') || 1);
+  const sort = (searchParams.get('sort') as any) || 'newest';
+  const perPage = Number(searchParams.get('perPage') || 16);
 
   useEffect(() => {
     loadProducts().then(setProducts);
   }, []);
+
+  const updateParams = (params: any) => {
+    setSearchParams({
+      page: String(params.page ?? page),
+      sort: params.sort ?? sort,
+      perPage: String(params.perPage ?? perPage),
+    });
+  };
 
   const filtered = useMemo(() => {
     return products.filter(product => product.category === category);
@@ -25,12 +35,8 @@ export const CatalogProducts = () => {
   const sorted = useMemo(() => {
     const copy = [...filtered];
 
-   if (sort === 'newest') {
-  copy.sort((a, b) => b.id.localeCompare(a.id));
-}
-    if (sort === 'name') {
-      copy.sort((a, b) => a.name.localeCompare(b.name));
-    }
+    if (sort === 'newest') copy.sort((a, b) => b.id.localeCompare(a.id));
+    if (sort === 'name') copy.sort((a, b) => a.name.localeCompare(b.name));
 
     if (sort === 'price') {
       copy.sort((a, b) => {
@@ -47,34 +53,16 @@ export const CatalogProducts = () => {
   const visible = sorted.slice(start, start + perPage);
   const totalPages = Math.ceil(sorted.length / perPage);
 
-  useEffect(() => {
-    setPage(1);
-  }, [category, perPage, sort]);
-
   return (
     <div className="catalog">
-      <button
-        onClick={() => navigate(-1)}
-        style={{
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          color: '#94aeb8',
-          letterSpacing: '2px',
-          fontSize: '14px',
-          marginBottom: '10px',
-        }}
-      >
-        BACK
-      </button>
+      <button onClick={() => navigate(-1)} className="hero-back">Back</button>
 
       <h2 style={{ textTransform: 'lowercase' }}>{category}</h2>
 
       <div style={{ display: "flex", gap: 20, marginBottom: 30 }}>
         <select
           value={sort}
-          onChange={e => setSort(e.target.value as any)}
-          style={{ padding: 8, borderRadius: 8 }}
+          onChange={e => updateParams({ sort: e.target.value, page: 1 })}
         >
           <option value="newest">Newest</option>
           <option value="name">By name</option>
@@ -83,8 +71,7 @@ export const CatalogProducts = () => {
 
         <select
           value={perPage}
-          onChange={e => setPerPage(Number(e.target.value))}
-          style={{ padding: 8, borderRadius: 8 }}
+          onChange={e => updateParams({ perPage: e.target.value, page: 1 })}
         >
           <option value={16}>16 per page</option>
           <option value={32}>32 per page</option>
@@ -103,14 +90,8 @@ export const CatalogProducts = () => {
           {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
             <button
               key={p}
-              onClick={() => setPage(p)}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                color: p === page ? '#dff6ff' : '#94aeb8',
-                fontSize: '14px',
-              }}
+              onClick={() => updateParams({ page: p })}
+              className={p === page ? 'active-page' : ''}
             >
               {p}
             </button>

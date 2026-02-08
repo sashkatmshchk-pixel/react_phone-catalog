@@ -92,7 +92,9 @@ export const Cart = () => {
             />
 
             <div style={{ flex: 1 }}>
-              <h3 style={{ margin: 0 }}>{product.name}</h3>
+              <h3 style={{ margin: 0 }}>
+  {product.name} {item.capacity} {item.color.replace('-', ' ')}
+</h3>
 
               <p style={{ margin: '6px 0', color: '#8aa8b5' }}>
                 {item.capacity} • {item.color.replace('-', ' ')}

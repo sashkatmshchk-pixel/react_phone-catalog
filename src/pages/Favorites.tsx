@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { getFavorites, removeFromFavorites } from '../store/favorites';
+import {
+  getFavorites,
+  removeFromFavorites,
+} from '../store/favorites';
 import type { FavoriteItem } from '../store/favorites';
 
 import { loadProducts } from '../data/products';
@@ -79,8 +82,12 @@ export const Favorites = () => {
             }}
           >
             <img src={image} width={90} style={{ borderRadius: 12 }} />
+
             <div style={{ flex: 1 }}>
-              <h3 style={{ margin: 0 }}>{product.name}</h3>
+              <h3 style={{ margin: 0 }}>
+                {product.name} {item.capacity}{' '}
+                {item.color.replace('-', ' ')}
+              </h3>
 
               <p style={{ margin: '6px 0', color: '#8aa8b5' }}>
                 {item.capacity} • {item.color.replace('-', ' ')}
@@ -88,7 +95,11 @@ export const Favorites = () => {
 
               <button
                 onClick={() =>
-                 removeFromFavorites(item.id)
+                  removeFromFavorites(
+                    item.id,
+                    item.color,
+                    item.capacity
+                  )
                 }
                 style={{
                   marginTop: 8,

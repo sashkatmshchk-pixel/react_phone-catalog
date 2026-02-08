@@ -19,7 +19,15 @@ export function getFavorites(): FavoriteItem[] {
   return read();
 }
 
-export function isFavorite(id: string, color: string, capacity: string): boolean {
+export function getFavoritesCount(): number {
+  return read().length;
+}
+
+export function isFavorite(
+  id: string,
+  color: string,
+  capacity: string
+): boolean {
   return read().some(
     item =>
       item.id === id &&
@@ -28,7 +36,11 @@ export function isFavorite(id: string, color: string, capacity: string): boolean
   );
 }
 
-export function toggleFavorite(id: string, color: string, capacity: string) {
+export function toggleFavorite(
+  id: string,
+  color: string,
+  capacity: string
+) {
   const items = read();
 
   const index = items.findIndex(
@@ -46,12 +58,20 @@ export function toggleFavorite(id: string, color: string, capacity: string) {
 
   write(items);
 }
-export function getFavoritesCount(): number {
-  return read().length;
-}
-export function removeFromFavorites(id: string) {
-  const favs = getFavorites().filter(item => item.id !== id);
-  localStorage.setItem('favorites', JSON.stringify(favs));
 
-  window.dispatchEvent(new Event('storage-update'));
+export function removeFromFavorites(
+  id: string,
+  color: string,
+  capacity: string
+) {
+  const items = read().filter(
+    item =>
+      !(
+        item.id === id &&
+        item.color === color &&
+        item.capacity === capacity
+      )
+  );
+
+  write(items);
 }
